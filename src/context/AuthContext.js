@@ -66,6 +66,7 @@ function AuthProvider({ children }) {
     const inititalize = async () => {
       try {
         const accessToken = window.localStorage.getItem("accessToken");
+
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
           const response = await apiService.get("/users/me");
@@ -77,6 +78,7 @@ function AuthProvider({ children }) {
           });
         } else {
           setSession(null);
+          console.log("Failed to load User Info");
           dispatch({
             type: INITIALIZE,
             payload: { isAuthenticated: false, user: null },
@@ -84,6 +86,7 @@ function AuthProvider({ children }) {
         }
       } catch (error) {
         setSession(null);
+        console.log("error", error);
         dispatch({
           type: INITIALIZE,
           payload: { isAuthenticated: false, user: null },
